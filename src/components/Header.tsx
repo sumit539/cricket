@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
-import { Menu, X, Trophy, Users, Calendar, Camera, Video, MessageCircle } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, Trophy, Users, Calendar, Camera, Video, MessageCircle, History } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   const scrollToSection = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      // If not on home page, navigate to home first
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+    
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -15,10 +23,10 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="container">
-        <div className="nav-brand">
+        <Link to="/" className="nav-brand">
           <Trophy className="logo-icon" />
           <span className="brand-text">BITStorm</span>
-        </div>
+        </Link>
         
         <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
           <a href="#about" onClick={() => scrollToSection('about')} className="nav-link">
@@ -47,6 +55,10 @@ const Header: React.FC = () => {
           <a href="#contact" onClick={() => scrollToSection('contact')} className="nav-link">
             Contact
           </a>
+          <Link to="/matches" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+            <History className="nav-icon" />
+            Match History
+          </Link>
         </nav>
 
         <button 

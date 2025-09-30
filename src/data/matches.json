@@ -1,0 +1,72 @@
+{
+  "matches": [
+    {
+      "id": 1,
+      "date": "2025-09-15",
+      "opponent": "Thunder Bolts CC",
+      "venue": "Central Cricket Ground",
+      "result": "won",
+      "ourScore": "245/8 (50 overs)",
+      "opponentScore": "198/10 (45.2 overs)",
+      "keyEvents": [
+        "Rajesh Kumar scored 89 runs",
+        "Priya Sharma took 4 wickets",
+        "Amit Singh made 3 catches",
+        "Partnership of 120 runs between Rajesh and Vikram"
+      ],
+      "manOfTheMatch": "Rajesh Kumar",
+      "createdAt": "2025-09-15T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "date": "2025-09-08",
+      "opponent": "Lightning Strikers",
+      "venue": "Sports Complex",
+      "result": "won",
+      "ourScore": "312/6 (50 overs)",
+      "opponentScore": "289/9 (50 overs)",
+      "keyEvents": [
+        "Vikram Reddy century (102 runs)",
+        "Sneha Patel 5-wicket haul",
+        "Anita Joshi 2 crucial catches",
+        "Last over thriller - won by 23 runs"
+      ],
+      "manOfTheMatch": "Vikram Reddy",
+      "createdAt": "2025-09-08T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "date": "2025-08-25",
+      "opponent": "Royal Challengers",
+      "venue": "Cricket Academy",
+      "result": "lost",
+      "ourScore": "178/10 (42.3 overs)",
+      "opponentScore": "182/7 (48.1 overs)",
+      "keyEvents": [
+        "Tight bowling by Sneha Patel",
+        "Amit Singh's 45 runs",
+        "Close finish - lost by 3 wickets",
+        "Good fielding display"
+      ],
+      "manOfTheMatch": "Amit Singh",
+      "createdAt": "2025-08-25T10:00:00Z"
+    },
+    {
+      "id": 4,
+      "date": "2025-08-15",
+      "opponent": "Victory Lions",
+      "venue": "Main Stadium",
+      "result": "won",
+      "ourScore": "267/5 (50 overs)",
+      "opponentScore": "234/10 (47.5 overs)",
+      "keyEvents": [
+        "Priya Sharma all-round performance",
+        "Rajesh Kumar 78 runs",
+        "Anita Joshi 3 wickets",
+        "Team effort in fielding"
+      ],
+      "manOfTheMatch": "Priya Sharma",
+      "createdAt": "2025-08-15T10:00:00Z"
+    }
+  ]
+}

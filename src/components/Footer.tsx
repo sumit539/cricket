@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trophy, Instagram, Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
+import VisitorCounter from './VisitorCounter';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -90,13 +91,16 @@ const Footer: React.FC = () => {
               Built with passion for cricket and community.
             </p>
           </div>
-          <button 
-            className="scroll-to-top"
-            onClick={scrollToTop}
-            aria-label="Scroll to top"
-          >
-            <ArrowUp className="scroll-icon" />
-          </button>
+          <div className="footer-right">
+            <VisitorCounter />
+            <button 
+              className="scroll-to-top"
+              onClick={scrollToTop}
+              aria-label="Scroll to top"
+            >
+              <ArrowUp className="scroll-icon" />
+            </button>
+          </div>
         </div>
       </div>
     </footer>

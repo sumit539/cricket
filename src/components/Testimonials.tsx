@@ -1,5 +1,5 @@
 import React from 'react';
-import { Quote, Star, Heart, Target } from 'lucide-react';
+import { Quote, Star, Heart } from 'lucide-react';
 
 interface Testimonial {
   id: number;

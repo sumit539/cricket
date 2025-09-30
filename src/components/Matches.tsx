@@ -1,85 +1,52 @@
-import React from 'react';
-import { Calendar, Trophy, Target, Users } from 'lucide-react';
-
-interface Match {
-  id: number;
-  date: string;
-  opponent: string;
-  venue: string;
-  result: 'won' | 'lost' | 'tied';
-  ourScore: string;
-  opponentScore: string;
-  keyEvents: string[];
-  manOfTheMatch: string;
-}
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Calendar, Trophy, Target, Users, Plus, History, Lock } from 'lucide-react';
+import matchService, { type Match } from '../services/matchService';
+import AddMatchForm from './AddMatchForm';
+import AdminLogin from './AdminLogin';
+import authService from '../services/authService';
 
 const Matches: React.FC = () => {
-  const matches: Match[] = [
-    {
-      id: 1,
-      date: "2025-09-15",
-      opponent: "Thunder Bolts CC",
-      venue: "Central Cricket Ground",
-      result: "won",
-      ourScore: "245/8 (50 overs)",
-      opponentScore: "198/10 (45.2 overs)",
-      keyEvents: [
-        "Rajesh Kumar scored 89 runs",
-        "Priya Sharma took 4 wickets",
-        "Amit Singh made 3 catches",
-        "Partnership of 120 runs between Rajesh and Vikram"
-      ],
-      manOfTheMatch: "Rajesh Kumar"
-    },
-    {
-      id: 2,
-      date: "2025-09-08",
-      opponent: "Lightning Strikers",
-      venue: "Sports Complex",
-      result: "won",
-      ourScore: "312/6 (50 overs)",
-      opponentScore: "289/9 (50 overs)",
-      keyEvents: [
-        "Vikram Reddy century (102 runs)",
-        "Sneha Patel 5-wicket haul",
-        "Anita Joshi 2 crucial catches",
-        "Last over thriller - won by 23 runs"
-      ],
-      manOfTheMatch: "Vikram Reddy"
-    },
-    {
-      id: 3,
-      date: "2025-08-25",
-      opponent: "Royal Challengers",
-      venue: "Cricket Academy",
-      result: "lost",
-      ourScore: "178/10 (42.3 overs)",
-      opponentScore: "182/7 (48.1 overs)",
-      keyEvents: [
-        "Tight bowling by Sneha Patel",
-        "Amit Singh's 45 runs",
-        "Close finish - lost by 3 wickets",
-        "Good fielding display"
-      ],
-      manOfTheMatch: "Amit Singh"
-    },
-    {
-      id: 4,
-      date: "2025-08-15",
-      opponent: "Victory Lions",
-      venue: "Main Stadium",
-      result: "won",
-      ourScore: "267/5 (50 overs)",
-      opponentScore: "234/10 (47.5 overs)",
-      keyEvents: [
-        "Priya Sharma all-round performance",
-        "Rajesh Kumar 78 runs",
-        "Anita Joshi 3 wickets",
-        "Team effort in fielding"
-      ],
-      manOfTheMatch: "Priya Sharma"
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    loadMatches();
+    checkAdminStatus();
+  }, []);
+
+  const checkAdminStatus = () => {
+    setIsAdmin(authService.isAuthenticated());
+  };
+
+  const loadMatches = () => {
+    const recentMatches = matchService.getRecentMatches(4);
+    setMatches(recentMatches);
+  };
+
+  const handleAddMatch = (matchData: any) => {
+    matchService.addMatch(matchData);
+    loadMatches();
+    setShowAddForm(false);
+  };
+
+  // Removed unused handleAdminLogin function
+
+  const handleLoginSuccess = () => {
+    setShowAdminLogin(false);
+    setIsAdmin(true);
+  };
+
+  const handleAddMatchClick = () => {
+    if (isAdmin) {
+      setShowAddForm(true);
+    } else {
+      setShowAdminLogin(true);
     }
-  ];
+  };
 
   const getResultIcon = (result: string) => {
     switch (result) {
@@ -102,6 +69,31 @@ const Matches: React.FC = () => {
           <p className="section-subtitle">
             Our journey through the latest games and achievements
           </p>
+          <div className="section-actions">
+            <button 
+              className="btn btn-primary"
+              onClick={handleAddMatchClick}
+            >
+              {isAdmin ? (
+                <>
+                  <Plus className="btn-icon" />
+                  Add Match
+                </>
+              ) : (
+                <>
+                  <Lock className="btn-icon" />
+                  Admin Login
+                </>
+              )}
+            </button>
+            <button 
+              className="btn btn-secondary"
+              onClick={() => navigate('/matches')}
+            >
+              <History className="btn-icon" />
+              View History
+            </button>
+          </div>
         </div>
         
         <div className="matches-grid">
@@ -156,6 +148,23 @@ const Matches: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {showAddForm && (
+          <div className="modal-overlay">
+            <AddMatchForm
+              onSubmit={handleAddMatch}
+              onCancel={() => setShowAddForm(false)}
+            />
+          </div>
+        )}
+
+        {showAdminLogin && (
+          <div className="modal-overlay">
+            <AdminLogin
+              onLogin={handleLoginSuccess}
+            />
+          </div>
+        )}
       </div>
     </section>
   );
