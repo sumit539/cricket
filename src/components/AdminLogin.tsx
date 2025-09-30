@@ -101,13 +101,6 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
           </button>
         </form>
 
-        <div className="login-footer">
-          <p className="demo-credentials">
-            <strong>Demo Credentials:</strong><br />
-            Username: bitstorm_admin<br />
-            Password: BITStorm2025!
-          </p>
-        </div>
       </div>
     </div>
   );

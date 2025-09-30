@@ -20,7 +20,7 @@ const Team: React.FC = () => {
       position: "Batsman",
       experience: "8 years",
       achievements: ["BIT Mesra Alumni", "Leading run scorer 2025", "Best Captain Award"],
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
+      image: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.34.jpeg"
     },
     {
       id: 2,
@@ -29,7 +29,7 @@ const Team: React.FC = () => {
       position: "All-rounder",
       experience: "6 years",
       achievements: ["BIT Mesra Alumni", "Player of the Year 2025", "Best Bowling Figures"],
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face"
+      image: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.35.jpeg"
     },
     {
       id: 3,
@@ -38,7 +38,7 @@ const Team: React.FC = () => {
       position: "Batsman",
       experience: "7 years",
       achievements: ["BIT Mesra Alumni", "Most dismissals 2025", "Best Wicket Keeper"],
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
+      image: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.36.jpeg"
     },
     {
       id: 4,
@@ -47,7 +47,7 @@ const Team: React.FC = () => {
       position: "Fast Bowler",
       experience: "5 years",
       achievements: ["BIT Mesra Alumni", "Leading wicket taker", "Best Bowling Average"],
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face"
+      image: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37.jpeg"
     },
     {
       id: 5,
@@ -56,7 +56,7 @@ const Team: React.FC = () => {
       position: "Opening Batsman",
       experience: "9 years",
       achievements: ["BIT Mesra Alumni", "Highest individual score", "Most centuries"],
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face"
+      image: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.34.jpeg"
     },
     {
       id: 6,
@@ -65,7 +65,7 @@ const Team: React.FC = () => {
       position: "Spin Bowler",
       experience: "4 years",
       achievements: ["BIT Mesra Alumni", "Best Economy Rate", "Most Catches"],
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&crop=face"
+      image: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.35.jpeg"
     }
   ];
 

@@ -16,59 +16,38 @@ const Gallery: React.FC = () => {
   const galleryImages: GalleryImage[] = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=800&h=600&fit=crop",
-      alt: "Team celebration after winning the championship",
-      caption: "Championship Victory 2024",
-      category: "matches"
+      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.34.jpeg",
+      alt: "BITStorm team member 1",
+      caption: "BITStorm Team Member",
+      category: "team"
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-      alt: "Team practice session",
-      caption: "Intensive Training Session",
-      category: "training"
+      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.35.jpeg",
+      alt: "BITStorm team member 2",
+      caption: "BITStorm Team Member",
+      category: "team"
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=600&fit=crop",
-      alt: "Team huddle before the match",
-      caption: "Pre-Match Team Huddle",
-      category: "matches"
+      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.36.jpeg",
+      alt: "BITStorm team member 3",
+      caption: "BITStorm Team Member",
+      category: "team"
     },
     {
       id: 4,
-      src: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=600&fit=crop",
-      alt: "Award ceremony",
-      caption: "Annual Awards Night",
-      category: "events"
+      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37.jpeg",
+      alt: "BITStorm team member 4",
+      caption: "BITStorm Team Member",
+      category: "team"
     },
     {
       id: 5,
-      src: "https://images.unsplash.com/photo-1594736797933-d0c29d1a8a0c?w=800&h=600&fit=crop",
-      alt: "Team building activity",
-      caption: "Team Building Workshop",
-      category: "events"
-    },
-    {
-      id: 6,
-      src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-      alt: "Net practice session",
-      caption: "Net Practice Session",
-      category: "training"
-    },
-    {
-      id: 7,
-      src: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=600&fit=crop",
-      alt: "Match action shot",
-      caption: "Action Shot from Recent Match",
+      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37 (1).jpeg",
+      alt: "BITStorm team in action",
+      caption: "BITStorm Team Action Shot",
       category: "matches"
-    },
-    {
-      id: 8,
-      src: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=600&fit=crop",
-      alt: "Club social gathering",
-      caption: "Club Social Gathering",
-      category: "events"
     }
   ];
 

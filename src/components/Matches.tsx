@@ -62,21 +62,23 @@ const Matches: React.FC = () => {
             Our journey through the latest games and achievements
           </p>
                  <div className="section-actions">
-                   <button
-                     className="btn btn-primary"
-                     onClick={handleAddMatchClick}
+                   {isAdmin && (
+                     <button
+                       className="btn btn-primary"
+                       onClick={handleAddMatchClick}
+                     >
+                       <Plus className="btn-icon" />
+                       Add Match
+                     </button>
+                   )}
+                   <button 
+                     className="btn btn-secondary"
+                     onClick={() => navigate('/matches')}
                    >
-                     <Plus className="btn-icon" />
-                     Add Match
+                     <History className="btn-icon" />
+                     View History
                    </button>
-            <button 
-              className="btn btn-secondary"
-              onClick={() => navigate('/matches')}
-            >
-              <History className="btn-icon" />
-              View History
-            </button>
-          </div>
+                 </div>
         </div>
         
         <div className="matches-grid">

@@ -6,8 +6,8 @@ interface AdminUser {
 }
 
 class AuthService {
-  private readonly ADMIN_USERNAME = 'bitstorm_admin';
-  private readonly ADMIN_PASSWORD = 'BITStorm2025!';
+  private readonly ADMIN_USERNAME = 'a7f8b2c4-d9e1-4f6a-8b3c-5e7f9a2b4c6d';
+  private readonly ADMIN_PASSWORD = 'x9y8z7w6-v5u4-t3s2-r1q0-p9o8n7m6l5k4';
   private readonly STORAGE_KEY = 'bitstorm_admin_auth';
 
   login(username: string, password: string): boolean {
