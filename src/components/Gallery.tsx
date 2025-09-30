@@ -17,37 +17,37 @@ const Gallery: React.FC = () => {
     {
       id: 1,
       src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.34.jpeg",
-      alt: "BITStorm team member 1",
-      caption: "BITStorm Team Member",
-      category: "team"
+      alt: "BITStorm team photo 1",
+      caption: "BITStorm Team Photo",
+      category: "gallery"
     },
     {
       id: 2,
       src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.35.jpeg",
-      alt: "BITStorm team member 2",
-      caption: "BITStorm Team Member",
-      category: "team"
+      alt: "BITStorm team photo 2",
+      caption: "BITStorm Team Photo",
+      category: "gallery"
     },
     {
       id: 3,
       src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.36.jpeg",
-      alt: "BITStorm team member 3",
-      caption: "BITStorm Team Member",
-      category: "team"
+      alt: "BITStorm team photo 3",
+      caption: "BITStorm Team Photo",
+      category: "gallery"
     },
     {
       id: 4,
       src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37.jpeg",
-      alt: "BITStorm team member 4",
-      caption: "BITStorm Team Member",
-      category: "team"
+      alt: "BITStorm team photo 4",
+      caption: "BITStorm Team Photo",
+      category: "gallery"
     },
     {
       id: 5,
       src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37 (1).jpeg",
       alt: "BITStorm team in action",
       caption: "BITStorm Team Action Shot",
-      category: "matches"
+      category: "gallery"
     }
   ];
 
@@ -70,6 +70,12 @@ const Gallery: React.FC = () => {
     const prevIndex = currentIndex === 0 ? galleryImages.length - 1 : currentIndex - 1;
     setCurrentIndex(prevIndex);
     setSelectedImage(galleryImages[prevIndex]);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'Escape') closeModal();
   };
 
   const categories = ["all", "matches", "training", "events"];
@@ -118,11 +124,20 @@ const Gallery: React.FC = () => {
         </div>
 
         {selectedImage && (
-          <div className="gallery-modal" onClick={closeModal}>
+          <div className="gallery-modal" onKeyDown={handleKeyDown} tabIndex={0}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <button className="modal-close" onClick={closeModal}>
                 <X size={24} />
               </button>
+              
+              {/* Large Navigation Arrows */}
+              <button className="large-nav-btn prev-btn" onClick={prevImage}>
+                <ChevronLeft size={48} />
+              </button>
+              <button className="large-nav-btn next-btn" onClick={nextImage}>
+                <ChevronRight size={48} />
+              </button>
+              
               <button className="modal-nav modal-prev" onClick={prevImage}>
                 <ChevronLeft size={24} />
               </button>
@@ -133,6 +148,9 @@ const Gallery: React.FC = () => {
               <div className="modal-caption">
                 <h3>{selectedImage.caption}</h3>
                 <p>{selectedImage.alt}</p>
+                <div className="image-counter">
+                  {currentIndex + 1} / {galleryImages.length}
+                </div>
               </div>
             </div>
           </div>

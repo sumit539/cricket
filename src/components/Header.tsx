@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Trophy, Users, Calendar, Camera, Video, MessageCircle, History, Lock, LogOut } from 'lucide-react';
+import { Menu, X, Trophy, Users, Calendar, Camera, Video, MessageCircle, History, Lock, LogOut, Image } from 'lucide-react';
 import authService from '../services/authService';
 import AdminLogin from './AdminLogin';
+import AdminMediaManager from './AdminMediaManager';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [showMediaManager, setShowMediaManager] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -40,6 +42,10 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     authService.logout();
     setIsAdmin(false);
+  };
+
+  const handleMediaManager = () => {
+    setShowMediaManager(true);
   };
 
   return (
@@ -117,6 +123,14 @@ const Header: React.FC = () => {
         <div className="header-actions">
           {isAdmin ? (
             <div className="admin-controls">
+              <button 
+                className="admin-media-btn"
+                onClick={handleMediaManager}
+                title="Media Manager"
+              >
+                <Image size={16} />
+                <span>Media</span>
+              </button>
               <span className="admin-badge">Admin</span>
               <button 
                 className="admin-logout-btn"
@@ -150,6 +164,12 @@ const Header: React.FC = () => {
       {showAdminLogin && (
         <div className="modal-overlay">
           <AdminLogin onLogin={handleLoginSuccess} />
+        </div>
+      )}
+
+      {showMediaManager && (
+        <div className="modal-overlay">
+          <AdminMediaManager onClose={() => setShowMediaManager(false)} />
         </div>
       )}
     </header>
