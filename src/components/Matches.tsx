@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Trophy, Target, Users, Plus, History, Lock } from 'lucide-react';
+import { Calendar, Trophy, Target, Users, Plus, History } from 'lucide-react';
 import matchService, { type Match } from '../services/matchService';
 import AddMatchForm from './AddMatchForm';
-import AdminLogin from './AdminLogin';
 import authService from '../services/authService';
 
 const Matches: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
@@ -33,18 +31,12 @@ const Matches: React.FC = () => {
     setShowAddForm(false);
   };
 
-  // Removed unused handleAdminLogin function
-
-  const handleLoginSuccess = () => {
-    setShowAdminLogin(false);
-    setIsAdmin(true);
-  };
-
   const handleAddMatchClick = () => {
     if (isAdmin) {
       setShowAddForm(true);
     } else {
-      setShowAdminLogin(true);
+      // Redirect to header admin login
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -69,23 +61,14 @@ const Matches: React.FC = () => {
           <p className="section-subtitle">
             Our journey through the latest games and achievements
           </p>
-          <div className="section-actions">
-            <button 
-              className="btn btn-primary"
-              onClick={handleAddMatchClick}
-            >
-              {isAdmin ? (
-                <>
-                  <Plus className="btn-icon" />
-                  Add Match
-                </>
-              ) : (
-                <>
-                  <Lock className="btn-icon" />
-                  Admin Login
-                </>
-              )}
-            </button>
+                 <div className="section-actions">
+                   <button
+                     className="btn btn-primary"
+                     onClick={handleAddMatchClick}
+                   >
+                     <Plus className="btn-icon" />
+                     Add Match
+                   </button>
             <button 
               className="btn btn-secondary"
               onClick={() => navigate('/matches')}
@@ -158,13 +141,6 @@ const Matches: React.FC = () => {
           </div>
         )}
 
-        {showAdminLogin && (
-          <div className="modal-overlay">
-            <AdminLogin
-              onLogin={handleLoginSuccess}
-            />
-          </div>
-        )}
       </div>
     </section>
   );

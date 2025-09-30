@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Trophy, Users, Calendar, Camera, Video, MessageCircle, History } from 'lucide-react';
+import { Menu, X, Trophy, Users, Calendar, Camera, Video, MessageCircle, History, Lock, LogOut } from 'lucide-react';
+import authService from '../services/authService';
+import AdminLogin from './AdminLogin';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    setIsAdmin(authService.isAuthenticated());
+  }, []);
 
   const scrollToSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -18,6 +26,20 @@ const Header: React.FC = () => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
     setIsMenuOpen(false);
+  };
+
+  const handleAdminLogin = () => {
+    setShowAdminLogin(true);
+  };
+
+  const handleLoginSuccess = () => {
+    setShowAdminLogin(false);
+    setIsAdmin(true);
+  };
+
+  const handleLogout = () => {
+    authService.logout();
+    setIsAdmin(false);
   };
 
   return (
@@ -59,7 +81,62 @@ const Header: React.FC = () => {
             <History className="nav-icon" />
             Match History
           </Link>
+          
+          {/* Mobile Admin Controls */}
+          <div className="mobile-admin-controls">
+            {isAdmin ? (
+              <div className="admin-controls">
+                <span className="admin-badge">Admin</span>
+                <button 
+                  className="admin-logout-btn"
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  title="Logout"
+                >
+                  <LogOut size={16} />
+                </button>
+              </div>
+            ) : (
+              <button 
+                className="admin-login-btn"
+                onClick={() => {
+                  handleAdminLogin();
+                  setIsMenuOpen(false);
+                }}
+                title="Admin Login"
+              >
+                <Lock size={16} />
+                <span>Admin Login</span>
+              </button>
+            )}
+          </div>
         </nav>
+
+        <div className="header-actions">
+          {isAdmin ? (
+            <div className="admin-controls">
+              <span className="admin-badge">Admin</span>
+              <button 
+                className="admin-logout-btn"
+                onClick={handleLogout}
+                title="Logout"
+              >
+                <LogOut size={16} />
+              </button>
+            </div>
+          ) : (
+            <button 
+              className="admin-login-btn"
+              onClick={handleAdminLogin}
+              title="Admin Login"
+            >
+              <Lock size={16} />
+              <span>Admin</span>
+            </button>
+          )}
+        </div>
 
         <button 
           className="menu-toggle"
@@ -69,6 +146,12 @@ const Header: React.FC = () => {
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
+
+      {showAdminLogin && (
+        <div className="modal-overlay">
+          <AdminLogin onLogin={handleLoginSuccess} />
+        </div>
+      )}
     </header>
   );
 };
