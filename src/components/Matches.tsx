@@ -17,7 +17,7 @@ const Matches: React.FC = () => {
   const matches: Match[] = [
     {
       id: 1,
-      date: "2024-01-15",
+      date: "2025-09-15",
       opponent: "Thunder Bolts CC",
       venue: "Central Cricket Ground",
       result: "won",
@@ -33,7 +33,7 @@ const Matches: React.FC = () => {
     },
     {
       id: 2,
-      date: "2024-01-08",
+      date: "2025-09-08",
       opponent: "Lightning Strikers",
       venue: "Sports Complex",
       result: "won",
@@ -49,7 +49,7 @@ const Matches: React.FC = () => {
     },
     {
       id: 3,
-      date: "2024-01-01",
+      date: "2025-08-25",
       opponent: "Royal Challengers",
       venue: "Cricket Academy",
       result: "lost",
@@ -65,7 +65,7 @@ const Matches: React.FC = () => {
     },
     {
       id: 4,
-      date: "2023-12-25",
+      date: "2025-08-15",
       opponent: "Victory Lions",
       venue: "Main Stadium",
       result: "won",

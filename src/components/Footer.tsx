@@ -13,10 +13,10 @@ const Footer: React.FC = () => {
           <div className="footer-section">
             <div className="footer-brand">
               <Trophy className="footer-logo" />
-              <span className="footer-brand-text">BitStorm</span>
+              <span className="footer-brand-text">BITStorm</span>
             </div>
             <p className="footer-description">
-              Born over tea and masala dosa, BitStorm is where every talent gets the opportunity. 
+              Born over tea and masala dosa, BITStorm is where every talent gets the opportunity. 
               Join our community of BIT Mesra alumni and be part of something special.
             </p>
             <div className="social-links">
@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p className="copyright">
-              © 2025 BitStorm Cricket Club. All rights reserved.
+              © 2025 BITStorm Cricket Club. All rights reserved.
             </p>
             <p className="footer-note">
               Built with passion for cricket and community.

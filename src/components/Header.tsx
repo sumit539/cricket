@@ -17,7 +17,7 @@ const Header: React.FC = () => {
       <div className="container">
         <div className="nav-brand">
           <Trophy className="logo-icon" />
-          <span className="brand-text">BitStorm</span>
+          <span className="brand-text">BITStorm</span>
         </div>
         
         <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>

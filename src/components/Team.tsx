@@ -19,7 +19,7 @@ const Team: React.FC = () => {
       role: "Captain",
       position: "Batsman",
       experience: "8 years",
-      achievements: ["BIT Mesra Alumni", "Leading run scorer 2023", "Best Captain Award"],
+      achievements: ["BIT Mesra Alumni", "Leading run scorer 2025", "Best Captain Award"],
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
     },
     {
@@ -28,7 +28,7 @@ const Team: React.FC = () => {
       role: "Vice Captain",
       position: "All-rounder",
       experience: "6 years",
-      achievements: ["BIT Mesra Alumni", "Player of the Year 2023", "Best Bowling Figures"],
+      achievements: ["BIT Mesra Alumni", "Player of the Year 2025", "Best Bowling Figures"],
       image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face"
     },
     {
@@ -37,7 +37,7 @@ const Team: React.FC = () => {
       role: "Wicket Keeper",
       position: "Batsman",
       experience: "7 years",
-      achievements: ["BIT Mesra Alumni", "Most dismissals 2023", "Best Wicket Keeper"],
+      achievements: ["BIT Mesra Alumni", "Most dismissals 2025", "Best Wicket Keeper"],
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
     },
     {

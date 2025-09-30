@@ -14,10 +14,10 @@ const Hero: React.FC = () => {
             <span>Established 2025</span>
           </div>
           <h1 className="hero-title">
-            Welcome to <span className="highlight">BitStorm Cricket Club</span>
+            Welcome to <span className="highlight">BITStorm Cricket Club</span>
           </h1>
           <p className="hero-description">
-            Born over a cup of tea and masala dosa in 2025, BitStorm is where every talent gets 
+            Born over a cup of tea and masala dosa in 2025, BITStorm is where every talent gets 
             the opportunity to shine. No favoritism, just pure passion for cricket. Join our 
             community of BIT Mesra alumni and cricket enthusiasts.
           </p>

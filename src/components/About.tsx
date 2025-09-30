@@ -6,7 +6,7 @@ const About: React.FC = () => {
     <section id="about" className="about">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">About BitStorm</h2>
+          <h2 className="section-title">About BITStorm</h2>
           <p className="section-subtitle">
             Born over tea and masala dosa, where every talent gets the opportunity
           </p>
@@ -16,7 +16,7 @@ const About: React.FC = () => {
           <div className="about-text">
             <h3>Our Story</h3>
             <p>
-              BitStorm Cricket Club was born in 2025 over a simple cup of tea and masala dosa. 
+              BITStorm Cricket Club was born in 2025 over a simple cup of tea and masala dosa. 
               What started as a casual conversation between BIT Mesra alumni has grown into 
               a passionate community where every talent gets the opportunity to shine. We believe 
               cricket is more than just a sport - it's a way of life that teaches discipline, 
