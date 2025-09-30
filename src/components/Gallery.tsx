@@ -1,57 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Camera, X, ChevronLeft, ChevronRight } from 'lucide-react';
-
-interface GalleryImage {
-  id: number;
-  src: string;
-  alt: string;
-  caption: string;
-  category: string;
-}
+import mediaService, { type MediaItem } from '../services/mediaService';
 
 const Gallery: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [selectedImage, setSelectedImage] = useState<MediaItem | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [galleryImages, setGalleryImages] = useState<MediaItem[]>([]);
 
-  const galleryImages: GalleryImage[] = [
-    {
-      id: 1,
-      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.34.jpeg",
-      alt: "BITStorm team photo 1",
-      caption: "BITStorm Team Photo",
-      category: "gallery"
-    },
-    {
-      id: 2,
-      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.35.jpeg",
-      alt: "BITStorm team photo 2",
-      caption: "BITStorm Team Photo",
-      category: "gallery"
-    },
-    {
-      id: 3,
-      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.36.jpeg",
-      alt: "BITStorm team photo 3",
-      caption: "BITStorm Team Photo",
-      category: "gallery"
-    },
-    {
-      id: 4,
-      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37.jpeg",
-      alt: "BITStorm team photo 4",
-      caption: "BITStorm Team Photo",
-      category: "gallery"
-    },
-    {
-      id: 5,
-      src: "/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37 (1).jpeg",
-      alt: "BITStorm team in action",
-      caption: "BITStorm Team Action Shot",
-      category: "gallery"
-    }
-  ];
+  useEffect(() => {
+    loadGalleryImages();
+  }, []);
 
-  const openModal = (image: GalleryImage, index: number) => {
+  const loadGalleryImages = () => {
+    const galleryMedia = mediaService.getMediaByCategory('gallery');
+    setGalleryImages(galleryMedia);
+  };
+
+  const openModal = (image: MediaItem, index: number) => {
     setSelectedImage(image);
     setCurrentIndex(index);
   };

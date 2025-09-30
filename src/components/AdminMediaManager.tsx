@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, Upload, Trash2, Edit, Image, Video, Users, Camera, Plus, Save } from 'lucide-react';
-
-interface MediaItem {
-  id: string;
-  src: string;
-  alt: string;
-  caption: string;
-  category: 'team' | 'gallery' | 'matches' | 'events';
-  type: 'image' | 'video';
-  uploadedAt: string;
-}
+import { X, Upload, Trash2, Edit, Image, Video, Users, Camera, Save } from 'lucide-react';
+import mediaService, { type MediaItem } from '../services/mediaService';
 
 interface AdminMediaManagerProps {
   onClose: () => void;
@@ -32,66 +23,7 @@ const AdminMediaManager: React.FC<AdminMediaManagerProps> = ({ onClose }) => {
   }, []);
 
   const loadMediaItems = () => {
-    const stored = localStorage.getItem('bitstorm_media');
-    if (stored) {
-      setMediaItems(JSON.parse(stored));
-    } else {
-      // Initialize with existing gallery images
-      const initialItems: MediaItem[] = [
-        {
-          id: '1',
-          src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.34.jpeg',
-          alt: 'BITStorm team member 1',
-          caption: 'BITStorm Team Member',
-          category: 'team',
-          type: 'image',
-          uploadedAt: new Date().toISOString()
-        },
-        {
-          id: '2',
-          src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.35.jpeg',
-          alt: 'BITStorm team member 2',
-          caption: 'BITStorm Team Member',
-          category: 'team',
-          type: 'image',
-          uploadedAt: new Date().toISOString()
-        },
-        {
-          id: '3',
-          src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.36.jpeg',
-          alt: 'BITStorm team member 3',
-          caption: 'BITStorm Team Member',
-          category: 'team',
-          type: 'image',
-          uploadedAt: new Date().toISOString()
-        },
-        {
-          id: '4',
-          src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37.jpeg',
-          alt: 'BITStorm team member 4',
-          caption: 'BITStorm Team Member',
-          category: 'team',
-          type: 'image',
-          uploadedAt: new Date().toISOString()
-        },
-        {
-          id: '5',
-          src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37 (1).jpeg',
-          alt: 'BITStorm team in action',
-          caption: 'BITStorm Team Action Shot',
-          category: 'gallery',
-          type: 'image',
-          uploadedAt: new Date().toISOString()
-        }
-      ];
-      setMediaItems(initialItems);
-      localStorage.setItem('bitstorm_media', JSON.stringify(initialItems));
-    }
-  };
-
-  const saveMediaItems = (items: MediaItem[]) => {
-    setMediaItems(items);
-    localStorage.setItem('bitstorm_media', JSON.stringify(items));
+    setMediaItems(mediaService.getAllMedia());
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,18 +35,15 @@ const AdminMediaManager: React.FC<AdminMediaManagerProps> = ({ onClose }) => {
     // Simulate file upload (in real app, upload to server)
     const reader = new FileReader();
     reader.onload = (e) => {
-      const newItem: MediaItem = {
-        id: Date.now().toString(),
+      mediaService.addMediaItem({
         src: e.target?.result as string,
         alt: newItem.alt || file.name,
         caption: newItem.caption || file.name,
         category: newItem.category,
-        type: file.type.startsWith('video/') ? 'video' : 'image',
-        uploadedAt: new Date().toISOString()
-      };
+        type: file.type.startsWith('video/') ? 'video' : 'image'
+      });
 
-      const updatedItems = [...mediaItems, newItem];
-      saveMediaItems(updatedItems);
+      loadMediaItems(); // Reload all media
       setIsUploading(false);
       setNewItem({ alt: '', caption: '', category: 'gallery', type: 'image' });
     };
@@ -123,8 +52,8 @@ const AdminMediaManager: React.FC<AdminMediaManagerProps> = ({ onClose }) => {
 
   const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this media item?')) {
-      const updatedItems = mediaItems.filter(item => item.id !== id);
-      saveMediaItems(updatedItems);
+      mediaService.deleteMediaItem(id);
+      loadMediaItems();
     }
   };
 
@@ -135,10 +64,8 @@ const AdminMediaManager: React.FC<AdminMediaManagerProps> = ({ onClose }) => {
   const handleSaveEdit = () => {
     if (!editingItem) return;
     
-    const updatedItems = mediaItems.map(item => 
-      item.id === editingItem.id ? editingItem : item
-    );
-    saveMediaItems(updatedItems);
+    mediaService.updateMediaItem(editingItem.id, editingItem);
+    loadMediaItems();
     setEditingItem(null);
   };
 
