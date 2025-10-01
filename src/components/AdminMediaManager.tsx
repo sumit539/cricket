@@ -26,28 +26,30 @@ const AdminMediaManager: React.FC<AdminMediaManagerProps> = ({ onClose }) => {
     setMediaItems(mediaService.getAllMedia());
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     setIsUploading(true);
     
-    // Simulate file upload (in real app, upload to server)
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      mediaService.addMediaItem({
-        src: e.target?.result as string,
+    try {
+      // Try GitHub upload first, fallback to local storage
+      await mediaService.addMediaItem({
+        src: '', // Will be set by GitHub service or fallback
         alt: newItem.alt || file.name,
         caption: newItem.caption || file.name,
         category: newItem.category,
         type: file.type.startsWith('video/') ? 'video' : 'image'
-      });
+      }, file);
 
       loadMediaItems(); // Reload all media
       setIsUploading(false);
       setNewItem({ alt: '', caption: '', category: 'gallery', type: 'image' });
-    };
-    reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setIsUploading(false);
+      alert('Upload failed. Please try again.');
+    }
   };
 
   const handleDelete = (id: string) => {

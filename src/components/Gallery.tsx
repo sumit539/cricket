@@ -6,13 +6,42 @@ const Gallery: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<MediaItem | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [galleryImages, setGalleryImages] = useState<MediaItem[]>([]);
+  const [activeCategory, setActiveCategory] = useState("all");
 
   useEffect(() => {
     loadGalleryImages();
+    
+    // Listen for storage changes to refresh when media is updated
+    const handleStorageChange = () => {
+      loadGalleryImages();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also listen for custom events (for same-tab updates)
+    window.addEventListener('mediaUpdated', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('mediaUpdated', handleStorageChange);
+    };
   }, []);
 
+  useEffect(() => {
+    // Reset current index when category changes
+    setCurrentIndex(0);
+  }, [activeCategory]);
+
   const loadGalleryImages = () => {
-    const galleryMedia = mediaService.getMediaByCategory('gallery');
+    const allMedia = mediaService.getAllMedia();
+    
+    // Get all images for gallery display
+    const galleryMedia = allMedia.filter(item => 
+      item.category === 'gallery' || 
+      item.category === 'matches' || 
+      item.category === 'events'
+    );
+    
     setGalleryImages(galleryMedia);
   };
 
@@ -26,15 +55,15 @@ const Gallery: React.FC = () => {
   };
 
   const nextImage = () => {
-    const nextIndex = (currentIndex + 1) % galleryImages.length;
+    const nextIndex = (currentIndex + 1) % filteredImages.length;
     setCurrentIndex(nextIndex);
-    setSelectedImage(galleryImages[nextIndex]);
+    setSelectedImage(filteredImages[nextIndex]);
   };
 
   const prevImage = () => {
-    const prevIndex = currentIndex === 0 ? galleryImages.length - 1 : currentIndex - 1;
+    const prevIndex = currentIndex === 0 ? filteredImages.length - 1 : currentIndex - 1;
     setCurrentIndex(prevIndex);
-    setSelectedImage(galleryImages[prevIndex]);
+    setSelectedImage(filteredImages[prevIndex]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -43,8 +72,7 @@ const Gallery: React.FC = () => {
     if (e.key === 'Escape') closeModal();
   };
 
-  const categories = ["all", "matches", "training", "events"];
-  const [activeCategory, setActiveCategory] = useState("all");
+  const categories = ["all", "gallery", "matches", "events"];
 
   const filteredImages = activeCategory === "all" 
     ? galleryImages 
@@ -72,20 +100,60 @@ const Gallery: React.FC = () => {
           ))}
         </div>
 
-        <div className="gallery-grid">
-          {filteredImages.map((image, index) => (
-            <div 
-              key={image.id} 
-              className="gallery-item"
-              onClick={() => openModal(image, index)}
-            >
-              <img src={image.src} alt={image.alt} />
-              <div className="gallery-overlay">
-                <Camera className="gallery-icon" />
-                <p className="gallery-caption">{image.caption}</p>
+        <div className="gallery-container">
+          {/* Navigation arrows for horizontal scrolling - only show if there are multiple images */}
+          {filteredImages.length > 1 && (
+            <>
+              <button 
+                className="gallery-nav gallery-nav-left" 
+                onClick={() => {
+                  const galleryGrid = document.querySelector('.gallery-grid');
+                  if (galleryGrid) {
+                    galleryGrid.scrollBy({ left: -440, behavior: 'smooth' });
+                  }
+                }}
+                title="Scroll left"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button 
+                className="gallery-nav gallery-nav-right" 
+                onClick={() => {
+                  const galleryGrid = document.querySelector('.gallery-grid');
+                  if (galleryGrid) {
+                    galleryGrid.scrollBy({ left: 440, behavior: 'smooth' });
+                  }
+                }}
+                title="Scroll right"
+              >
+                <ChevronRight size={24} />
+              </button>
+            </>
+          )}
+
+          <div className="gallery-grid">
+            {filteredImages.length > 0 ? (
+              filteredImages.map((image, index) => (
+                <div 
+                  key={image.id} 
+                  className="gallery-item"
+                  onClick={() => openModal(image, index)}
+                >
+                  <img src={image.src} alt={image.alt} />
+                  <div className="gallery-overlay">
+                    <Camera className="gallery-icon" />
+                    <p className="gallery-caption">{image.caption}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="gallery-empty">
+                <Camera size={48} />
+                <h3>No images found</h3>
+                <p>Upload some images through the admin panel to see them here.</p>
               </div>
-            </div>
-          ))}
+            )}
+          </div>
         </div>
 
         {selectedImage && (
@@ -114,7 +182,7 @@ const Gallery: React.FC = () => {
                 <h3>{selectedImage.caption}</h3>
                 <p>{selectedImage.alt}</p>
                 <div className="image-counter">
-                  {currentIndex + 1} / {galleryImages.length}
+                  {currentIndex + 1} / {filteredImages.length}
                 </div>
               </div>
             </div>

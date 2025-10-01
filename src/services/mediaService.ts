@@ -6,56 +6,60 @@ export interface MediaItem {
   category: 'team' | 'gallery' | 'matches' | 'events';
   type: 'image' | 'video';
   uploadedAt: string;
+  githubPath?: string; // Path in GitHub repo
 }
 
 class MediaService {
   private readonly STORAGE_KEY = 'bitstorm_media';
+  private useGitHub: boolean = false;
 
   // Initialize with default media if none exists
   private initializeDefaultMedia(): MediaItem[] {
     const defaultMedia: MediaItem[] = [
-      {
-        id: '1',
-        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.34.jpeg',
-        alt: 'BITStorm team member 1',
-        caption: 'BITStorm Team Member',
-        category: 'team',
-        type: 'image',
-        uploadedAt: new Date().toISOString()
-      },
-      {
-        id: '2',
-        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.35.jpeg',
-        alt: 'BITStorm team member 2',
-        caption: 'BITStorm Team Member',
-        category: 'team',
-        type: 'image',
-        uploadedAt: new Date().toISOString()
-      },
-      {
-        id: '3',
-        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.36.jpeg',
-        alt: 'BITStorm team member 3',
-        caption: 'BITStorm Team Member',
-        category: 'team',
-        type: 'image',
-        uploadedAt: new Date().toISOString()
-      },
-      {
-        id: '4',
-        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37.jpeg',
-        alt: 'BITStorm team member 4',
-        caption: 'BITStorm Team Member',
-        category: 'team',
-        type: 'image',
-        uploadedAt: new Date().toISOString()
-      },
+      // No team photos in media service - team photos are separate
+      // Gallery photos - celebration, group photos, events
       {
         id: '5',
-        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37 (1).jpeg',
-        alt: 'BITStorm team in action',
-        caption: 'BITStorm Team Action Shot',
+        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.34.jpeg',
+        alt: 'BITStorm team celebration',
+        caption: 'Team Victory Celebration',
         category: 'gallery',
+        type: 'image',
+        uploadedAt: new Date().toISOString()
+      },
+      {
+        id: '6',
+        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.35.jpeg',
+        alt: 'BITStorm group photo',
+        caption: 'Team Group Photo',
+        category: 'gallery',
+        type: 'image',
+        uploadedAt: new Date().toISOString()
+      },
+      {
+        id: '7',
+        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.36.jpeg',
+        alt: 'BITStorm celebration moment',
+        caption: 'Celebration Moment',
+        category: 'gallery',
+        type: 'image',
+        uploadedAt: new Date().toISOString()
+      },
+      {
+        id: '8',
+        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37.jpeg',
+        alt: 'BITStorm match celebration',
+        caption: 'Match Victory Celebration',
+        category: 'matches',
+        type: 'image',
+        uploadedAt: new Date().toISOString()
+      },
+      {
+        id: '9',
+        src: '/images/gallery/WhatsApp Image 2025-10-01 at 01.31.37 (1).jpeg',
+        alt: 'BITStorm man of the match',
+        caption: 'Man of the Match Award',
+        category: 'events',
         type: 'image',
         uploadedAt: new Date().toISOString()
       }
@@ -65,16 +69,36 @@ class MediaService {
     return defaultMedia;
   }
 
+  // Initialize GitHub integration
+  async initializeGitHub(): Promise<void> {
+    try {
+      const { default: githubService } = await import('./githubService');
+      this.useGitHub = githubService.isAvailable();
+      
+      if (this.useGitHub) {
+        // Try to load from GitHub first
+        const githubMedia = await githubService.getMediaList();
+        if (githubMedia.length > 0) {
+          this.saveMediaItems(githubMedia);
+        }
+      }
+    } catch (error) {
+      console.log('GitHub integration not available, using localStorage');
+      this.useGitHub = false;
+    }
+  }
+
   // Get all media items
   getAllMedia(): MediaItem[] {
     const stored = localStorage.getItem(this.STORAGE_KEY);
+    
     if (!stored) {
       return this.initializeDefaultMedia();
     }
     
     try {
       return JSON.parse(stored);
-    } catch {
+    } catch (error) {
       return this.initializeDefaultMedia();
     }
   }
@@ -90,16 +114,36 @@ class MediaService {
   }
 
   // Add new media item
-  addMediaItem(item: Omit<MediaItem, 'id' | 'uploadedAt'>): MediaItem {
+  async addMediaItem(item: Omit<MediaItem, 'id' | 'uploadedAt'>, file?: File): Promise<MediaItem> {
     const newItem: MediaItem = {
       ...item,
       id: Date.now().toString(),
       uploadedAt: new Date().toISOString()
     };
-    
-    const allMedia = this.getAllMedia();
-    const updatedMedia = [...allMedia, newItem];
-    this.saveMediaItems(updatedMedia);
+
+    // If GitHub is available and file is provided, upload to GitHub
+    if (this.useGitHub && file) {
+      try {
+        const { default: githubService } = await import('./githubService');
+        const githubUrl = await githubService.uploadFile(file, item.category, item.caption);
+        newItem.src = githubUrl;
+        newItem.githubPath = `public/images/${item.category}/${file.name}`;
+        
+        // Update media list in GitHub
+        const allMedia = this.getAllMedia();
+        const updatedMedia = [...allMedia, newItem];
+        await githubService.updateMediaList(updatedMedia);
+      } catch (error) {
+        console.error('GitHub upload failed, falling back to localStorage:', error);
+        // Fall back to localStorage
+        this.saveMediaItems([...this.getAllMedia(), newItem]);
+      }
+    } else {
+      // Use localStorage
+      const allMedia = this.getAllMedia();
+      const updatedMedia = [...allMedia, newItem];
+      this.saveMediaItems(updatedMedia);
+    }
     
     return newItem;
   }
@@ -132,6 +176,8 @@ class MediaService {
   // Save media items to localStorage
   private saveMediaItems(items: MediaItem[]): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
+    // Dispatch custom event to notify components of media updates
+    window.dispatchEvent(new CustomEvent('mediaUpdated'));
   }
 
   // Get recent media (last 10 items)

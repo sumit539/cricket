@@ -14,7 +14,15 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     setIsAdmin(authService.isAuthenticated());
+    
+    // Scroll to top on page load/refresh
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+
+  // Scroll to top when location changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location]);
 
   const scrollToSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -51,7 +59,14 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="container">
-        <Link to="/" className="nav-brand">
+        <Link 
+          to="/" 
+          className="nav-brand"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setIsMenuOpen(false);
+          }}
+        >
           <Trophy className="logo-icon" />
           <span className="brand-text">BITStorm</span>
         </Link>

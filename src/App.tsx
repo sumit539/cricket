@@ -12,6 +12,9 @@ import Footer from './components/Footer';
 import MatchHistory from './components/MatchHistory';
 import './App.css';
 
+// Import reset utility for testing
+import './utils/resetMedia';
+
 function App() {
   return (
     <Router>
